@@ -1,4 +1,4 @@
-example of custom API
+//example of custom API
 import groovy.json.JsonSlurperClassic 
 
 @NonCPS
