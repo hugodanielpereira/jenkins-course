@@ -1,54 +1,54 @@
-// example of custom API
-// import groovy.json.JsonSlurperClassic 
+example of custom API
+import groovy.json.JsonSlurperClassic 
 
-// @NonCPS
-// def jsonParse(def json) {
-//     new groovy.json.JsonSlurperClassic().parseText(json)
-// }
+@NonCPS
+def jsonParse(def json) {
+    new groovy.json.JsonSlurperClassic().parseText(json)
+}
 
-// def repo = "hugodanielpereira/jenkins-course"
+def repo = "hugodanielpereira/jenkins-course"
 
-// def token = httpRequest authentication: 'bitbucket-oauth', contentType: 'APPLICATION_FORM', httpMode: 'POST', requestBody: 'grant_type=client_credentials', url: 'https://bitbucket.org/site/oauth2/access_token'
-// def accessToken = jsonParse(token.content).access_token
-// def pr = httpRequest customHeaders: [[maskValue: true, name: 'Authorization', value: 'Bearer ' + accessToken]], url: "https://api.bitbucket.org/2.0/repositories/${repo}/pullrequests"
+def token = httpRequest authentication: 'bitbucket-oauth', contentType: 'APPLICATION_FORM', httpMode: 'POST', requestBody: 'grant_type=client_credentials', url: 'https://bitbucket.org/site/oauth2/access_token'
+def accessToken = jsonParse(token.content).access_token
+def pr = httpRequest customHeaders: [[maskValue: true, name: 'Authorization', value: 'Bearer ' + accessToken]], url: "https://api.bitbucket.org/2.0/repositories/${repo}/pullrequests"
 
-// for (p in jsonParse(pr.content).values) { 
-//     println(p.source.branch.name)
-// }
+for (p in jsonParse(pr.content).values) { 
+    println(p.source.branch.name)
+}
 
 
-// Bitbucket OAuth Version
-import hudson.security.AuthorizationStrategy
-import hudson.security.SecurityRealm
-import jenkins.model.Jenkins
-import org.jenkinsci.plugins.BitbucketSecurityRealm
-import hudson.util.Secret
+// // Bitbucket OAuth Version
+// import hudson.security.AuthorizationStrategy
+// import hudson.security.SecurityRealm
+// import jenkins.model.Jenkins
+// import org.jenkinsci.plugins.BitbucketSecurityRealm
+// import hudson.util.Secret
 
-// parameters
-def bitbucketSecurityRealmParameters = [
-  clientID:     'pftcDB28VwVQbX5aea',
-  clientSecret: 'fLwLSfZ9Gn5Q9HL8sQj4Kn4XCTmmprT6'
-]
+// // parameters
+// def bitbucketSecurityRealmParameters = [
+//   clientID:     'pftcDB28VwVQbX5aea',
+//   clientSecret: 'fLwLSfZ9Gn5Q9HL8sQj4Kn4XCTmmprT6'
+// ]
 
-// security realm configuration
-SecurityRealm bitbucketSecurityRealm = new BitbucketSecurityRealm(
-  bitbucketSecurityRealmParameters.clientID,
-  "",
-  Secret.fromString(bitbucketSecurityRealmParameters.clientSecret)
-)
+// // security realm configuration
+// SecurityRealm bitbucketSecurityRealm = new BitbucketSecurityRealm(
+//   bitbucketSecurityRealmParameters.clientID,
+//   "",
+//   Secret.fromString(bitbucketSecurityRealmParameters.clientSecret)
+// )
 
-// authorization strategy - full control when logged in
-AuthorizationStrategy authorizationStrategy = new hudson.security.FullControlOnceLoggedInAuthorizationStrategy()
+// // authorization strategy - full control when logged in
+// AuthorizationStrategy authorizationStrategy = new hudson.security.FullControlOnceLoggedInAuthorizationStrategy()
 
-// authorization strategy - set anonymous read to false
-authorizationStrategy.setAllowAnonymousRead(false)
+// // authorization strategy - set anonymous read to false
+// authorizationStrategy.setAllowAnonymousRead(false)
 
-// get Jenkins instance
-Jenkins jenkins = Jenkins.getInstance()
+// // get Jenkins instance
+// Jenkins jenkins = Jenkins.getInstance()
 
-// add configurations to Jenkins
-jenkins.setSecurityRealm(bitbucketSecurityRealm)
-jenkins.setAuthorizationStrategy(authorizationStrategy)
+// // add configurations to Jenkins
+// jenkins.setSecurityRealm(bitbucketSecurityRealm)
+// jenkins.setAuthorizationStrategy(authorizationStrategy)
 
-// save current Jenkins state to disk
-jenkins.save()
+// // save current Jenkins state to disk
+// jenkins.save()
